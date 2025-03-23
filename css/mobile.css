@@ -1,0 +1,129 @@
+/* Стилі для мобільних пристроїв */
+
+/* Загальні стилі для прокручування категорій */
+.category-selector {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Стилі для прокручування вкладок */
+.tabs {
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none;
+    /* IE і Edge */
+    scrollbar-width: none;
+    /* Firefox */
+    position: relative;
+}
+
+.tabs::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari та Opera */
+}
+
+.tabs.active-scroll {
+    cursor: grabbing;
+}
+
+/* Індикатори прокручування */
+.scroll-indicator {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    background-color: rgba(74, 111, 165, 0.8);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: opacity 0.3s ease;
+    font-size: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.scroll-indicator.left {
+    left: 5px;
+}
+
+.scroll-indicator.right {
+    right: 5px;
+}
+
+.scroll-indicator.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Стилі для категорій на мобільних */
+@media (max-width: 768px) {
+    .category-selector {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 5px;
+        -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .category-selector::-webkit-scrollbar {
+        display: none;
+    }
+
+    .category-btn {
+        flex: 0 0 auto;
+        white-space: nowrap;
+    }
+
+    /* Збільшені кнопки для тач-інтерфейсу */
+    .tab-btn,
+    .category-btn {
+        min-height: 44px;
+        /* Мінімальний розмір для комфортного натискання */
+    }
+
+    /* Адаптація висоти блоку чату */
+    .tab-content {
+        height: 65vh;
+        /* Трохи менша висота на мобільних */
+    }
+
+    /* Вертикальні кнопки соцмереж */
+    .share-buttons {
+        flex-direction: column;
+    }
+
+    .share-btn,
+    .copy-btn {
+        margin: 5px 0;
+    }
+}
+
+/* Стилі для дуже маленьких екранів */
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    header p {
+        font-size: 0.9rem;
+    }
+
+    .category-btn {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.8rem;
+    }
+
+    .tab-btn {
+        font-size: 0.8rem;
+        padding: 0.5rem 0.7rem;
+    }
+
+    .chat-input input,
+    .chat-input button {
+        padding: 0.6rem;
+    }
+}

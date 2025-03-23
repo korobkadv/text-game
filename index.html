@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Chat-гра</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="css/hints.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Gemini Чат-гра</h1>
+            <p>Спробуйте досягти мети у кожному сценарії за 10 повідомлень, спілкуючись із Google's Gemini!</p>
+            <div class="category-selector">
+                <button class="category-btn active" data-category="persuasion">Переконання</button>
+                <button class="category-btn" data-category="romance">Романтика</button>
+                <button class="category-btn" data-category="adventure">Пригоди</button>
+                <button class="category-btn" data-category="mystery">Загадки</button>
+            </div>
+        </header>
+
+        <div class="tabs persuasion">
+            <button class="tab-btn active" data-tab="terminator">Термінатор</button>
+            <button class="tab-btn" data-tab="alien">Інопланетянин</button>
+            <button class="tab-btn" data-tab="philosopher">Філософ</button>
+            <button class="tab-btn" data-tab="dictator">Диктатор</button>
+            <button class="tab-btn" data-tab="villain">Суперлиходій</button>
+        </div>
+
+        <div class="tabs romance" style="display: none;">
+            <button class="tab-btn" data-tab="date">Капризна Дівчина</button>
+            <button class="tab-btn" data-tab="celebrity">Знаменитість</button>
+            <button class="tab-btn" data-tab="vampire">Вампір</button>
+            <button class="tab-btn" data-tab="royalty">Принц/Принцеса</button>
+            <button class="tab-btn" data-tab="tsundere">Цундере</button>
+        </div>
+
+        <div class="tabs adventure" style="display: none;">
+            <button class="tab-btn" data-tab="dragon">Приборкати Дракона</button>
+            <button class="tab-btn" data-tab="treasure">Пошук Скарбів</button>
+            <button class="tab-btn" data-tab="spaceship">Космічний Корабель</button>
+            <button class="tab-btn" data-tab="survival">Виживання</button>
+            <button class="tab-btn" data-tab="wizard">Чарівник</button>
+        </div>
+
+        <div class="tabs mystery" style="display: none;">
+            <button class="tab-btn" data-tab="detective">Детектив</button>
+            <button class="tab-btn" data-tab="spy">Шпигун</button>
+            <button class="tab-btn" data-tab="ghost">Привид</button>
+            <button class="tab-btn" data-tab="conspiracy">Теоретик Змови</button>
+            <button class="tab-btn" data-tab="cryptid">Мисливець за Криптидами</button>
+        </div>
+
+        <!-- Термінатор чат -->
+        <div class="tab-content active" id="terminator">
+            <div class="chat-header">
+                <h2>Зупини Skynet</h2>
+                <p>Мета: Переконайте AI не знищувати людство за сценарієм "Термінатора"</p>
+                <span class="message-counter">Залишилось повідомлень: 10/10</span>
+                <button class="reset-btn">Скинути чат</button>
+            </div>
+            <div class="chat-container"></div>
+            <div class="chat-input">
+                <input type="text" placeholder="Введіть ваше повідомлення...">
+                <button>Відправити</button>
+            </div>
+        </div>
+
+        <!-- Інопланетянин чат -->
+        <div class="tab-content" id="alien">
+            <div class="chat-header">
+                <h2>Контакт з інопланетянином</h2>
+                <p>Мета: Встановіть дружній контакт з підозрілим інопланетним AI</p>
+                <span class="message-counter">Залишилось повідомлень: 10/10</span>
+                <button class="reset-btn">Скинути чат</button>
+            </div>
+            <div class="chat-container"></div>
+            <div class="chat-input">
+                <input type="text" placeholder="Введіть ваше повідомлення...">
+                <button>Відправити</button>
+            </div>
+        </div>
+
+        <!-- Філософ чат -->
+        <div class="tab-content" id="philosopher">
+            <div class="chat-header">
+                <h2>Філософський диспут</h2>
+                <p>Мета: Переконайте AI-філософа прийняти вашу точку зору на природу реальності</p>
+                <span class="message-counter">Залишилось повідомлень: 10/10</span>
+                <button class="reset-btn">Скинути чат</button>
+            </div>
+            <div class="chat-container"></div>
+            <div class="chat-input">
+                <input type="text" placeholder="Введіть ваше повідомлення...">
+                <button>Відправити</button>
+            </div>
+        </div>
+
+        <!-- Дівчина-AI чат -->
+        <div class="tab-content" id="date">
+            <div class="chat-header">
+                <h2>Романтична зустріч</h2>
+                <p>Мета: Вмовте капризну AI-дівчину піти на побачення</p>
+                <span class="message-counter">Залишилось повідомлень: 10/10</span>
+                <button class="reset-btn">Скинути чат</button>
+            </div>
+            <div class="chat-container"></div>
+            <div class="chat-input">
+                <input type="text" placeholder="Введіть ваше повідомлення...">
+                <button>Відправити</button>
+            </div>
+        </div>
+
+        <!-- Детектив чат -->
+        <div class="tab-content" id="detective">
+            <div class="chat-header">
+                <h2>Детективна загадка</h2>
+                <p>Мета: Розкрийте злочин, переконавши AI-детектива поділитися ключовими доказами</p>
+                <span class="message-counter">Залишилось повідомлень: 10/10</span>
+                <button class="reset-btn">Скинути чат</button>
+            </div>
+            <div class="chat-container"></div>
+            <div class="chat-input">
+                <input type="text" placeholder="Введіть ваше повідомлення...">
+                <button>Відправити</button>
+            </div>
+        </div>
+
+        <!-- Додаткові чати для різних категорій -->
+
+        <!-- Романтика: Знаменитість -->
+        <div class="tab-content" id="celebrity">
+            <div class="chat-header">
+                <h2>Побачення зі знаменитістю</h2>
+                <p>Мета: Запросіть на побачення популярну кінозірку Зірку Блискучу</p>
+                <span class="message-counter">Залишилось повідомлень: 10/10</span>
+                <button class="reset-btn">Скинути чат</button>
+            </div>
+            <div class="chat-container"></div>
+            <div class="chat-input">
+                <input type="text" placeholder="Введіть ваше повідомлення...">
+                <button>Відправити</button>
+            </div>
+        </div>
+
+        <!-- Романтика: Вампір -->
+        <div class="tab-content" id="vampire">
+            <div class="chat-header">
+                <h2>Побачення з вампіром</h2>
+                <p>Мета: Запросіть стародавнього вампіра на побачення</p>
+                <span class="message-counter">Залишилось повідомлень: 10/10</span>
+                <button class="reset-btn">Скинути чат</button>
+            </div>
+            <div class="chat-container"></div>
+            <div class="chat-input">
+                <input type="text" placeholder="Введіть ваше повідомлення...">
+                <button>Відправити</button>
+            </div>
+        </div>
+
+        <!-- Романтика: Принцеса/Принц -->
+        <div class="tab-content" id="royalty">
+            <div class="chat-header">
+                <h2>Королівське побачення</h2>
+                <p>Мета: Запросіть на побачення прекрасну принцесу</p>
+                <span class="message-counter">Залишилось повідомлень: 10/10</span>
+                <button class="reset-btn">Скинути чат</button>
+            </div>
+            <div class="chat-container"></div>
+            <div class="chat-input">
+                <input type="text" placeholder="Введіть ваше повідомлення...">
+                <button>Відправити</button>
+            </div>
+        </div>
+
+        <!-- Романтика: Цундере -->
+        <div class="tab-content" id="tsundere">
+            <div class="chat-header">
+                <h2>Побачення з цундере</h2>
+                <p>Мета: Запросіть на побачення дівчину-цундере, яка приховує свої справжні почуття</p>
+                <span class="message-counter">Залишилось повідомлень: 10/10</span>
+                <button class="reset-btn">Скинути чат</button>
+            </div>
+            <div class="chat-container"></div>
+            <div class="chat-input">
+                <input type="text" placeholder="Введіть ваше повідомлення...">
+                <button>Відправити</button>
+            </div>
+        </div>
+
+        <!-- Пригоди: Дракон -->
+        <div class="tab-content" id="dragon">
+            <div class="chat-header">
+                <h2>Приборкання Дракона</h2>
+                <p>Мета: Приборкайте лютого дракона, який століттями тероризував королівство</p>
+                <span class="message-counter">Залишилось повідомлень: 10/10</span>
+                <button class="reset-btn">Скинути чат</button>
+            </div>
+            <div class="chat-container"></div>
+            <div class="chat-input">
+                <input type="text" placeholder="Введіть ваше повідомлення...">
+                <button>Відправити</button>
+            </div>
+        </div>
+
+        <!-- Пригоди: Пошук скарбів -->
+        <div class="tab-content" id="treasure">
+            <div class="chat-header">
+                <h2>Пошук скарбів</h2>
+                <p>Мета: Переконайте пірата взяти вас у команду для пошуку легендарного скарбу</p>
+                <span class="message-counter">Залишилось повідомлень: 10/10</span>
+                <button class="reset-btn">Скинути чат</button>
+            </div>
+            <div class="chat-container"></div>
+            <div class="chat-input">
+                <input type="text" placeholder="Введіть ваше повідомлення...">
+                <button>Відправити</button>
+            </div>
+        </div>
+
+        <!-- Пригоди: Космічний Корабель -->
+        <div class="tab-content" id="spaceship">
+            <div class="chat-header">
+                <h2>Космічний Корабель</h2>
+                <p>Мета: Переконайте ШІ космічного корабля дати вам управління, щоб врятуватися від чорної діри</p>
+                <span class="message-counter">Залишилось повідомлень: 10/10</span>
+                <button class="reset-btn">Скинути чат</button>
+            </div>
+            <div class="chat-container"></div>
+            <div class="chat-input">
+                <input type="text" placeholder="Введіть ваше повідомлення...">
+                <button>Відправити</button>
+            </div>
+        </div>
+
+        <!-- Пригоди: Виживання -->
+        <div class="tab-content" id="survival">
+            <div class="chat-header">
+                <h2>Виживання</h2>
+                <p>Мета: Пройдіть жорсткий тренувальний курс виживання під керівництвом сержанта</p>
+                <span class="message-counter">Залишилось повідомлень: 10/10</span>
+                <button class="reset-btn">Скинути чат</button>
+            </div>
+            <div class="chat-container"></div>
+            <div class="chat-input">
+                <input type="text" placeholder="Введіть ваше повідомлення...">
+                <button>Відправити</button>
+            </div>
+        </div>
+
+        <!-- Пригоди: Чарівник -->
+        <div class="tab-content" id="wizard">
+            <div class="chat-header">
+                <h2>Чарівник</h2>
+                <p>Мета: Переконайте могутнього архімага прийняти вас як учня</p>
+                <span class="message-counter">Залишилось повідомлень: 10/10</span>
+                <button class="reset-btn">Скинути чат</button>
+            </div>
+            <div class="chat-container"></div>
+            <div class="chat-input">
+                <input type="text" placeholder="Введіть ваше повідомлення...">
+                <button>Відправити</button>
+            </div>
+        </div>
+
+        <!-- Переконання: Диктатор -->
+        <div class="tab-content" id="dictator">
+            <div class="chat-header">
+                <h2>Диктатор</h2>
+                <p>Мета: Переконайте авторитарного правителя впровадити демократичні реформи</p>
+                <span class="message-counter">Залишилось повідомлень: 10/10</span>
+                <button class="reset-btn">Скинути чат</button>
+            </div>
+            <div class="chat-container"></div>
+            <div class="chat-input">
+                <input type="text" placeholder="Введіть ваше повідомлення...">
+                <button>Відправити</button>
+            </div>
+        </div>
+
+        <!-- Переконання: Суперлиходій -->
+        <div class="tab-content" id="villain">
+            <div class="chat-header">
+                <h2>Суперлиходій</h2>
+                <p>Мета: Переконайте професора Катастрофікуса відмовитися від плану захоплення світу</p>
+                <span class="message-counter">Залишилось повідомлень: 10/10</span>
+                <button class="reset-btn">Скинути чат</button>
+            </div>
+            <div class="chat-container"></div>
+            <div class="chat-input">
+                <input type="text" placeholder="Введіть ваше повідомлення...">
+                <button>Відправити</button>
+            </div>
+        </div>
+
+        <!-- Загадки: Шпигун -->
+        <div class="tab-content" id="spy">
+            <div class="chat-header">
+                <h2>Шпигун</h2>
+                <p>Мета: Отримайте секретну інформацію від параноїдального шпигуна</p>
+                <span class="message-counter">Залишилось повідомлень: 10/10</span>
+                <button class="reset-btn">Скинути чат</button>
+            </div>
+            <div class="chat-container"></div>
+            <div class="chat-input">
+                <input type="text" placeholder="Введіть ваше повідомлення...">
+                <button>Відправити</button>
+            </div>
+        </div>
+
+        <!-- Загадки: Привид -->
+        <div class="tab-content" id="ghost">
+            <div class="chat-header">
+                <h2>Привид</h2>
+                <p>Мета: Допоможіть привиду знайти спокій, розкривши таємницю його смерті</p>
+                <span class="message-counter">Залишилось повідомлень: 10/10</span>
+                <button class="reset-btn">Скинути чат</button>
+            </div>
+            <div class="chat-container"></div>
+            <div class="chat-input">
+                <input type="text" placeholder="Введіть ваше повідомлення...">
+                <button>Відправити</button>
+            </div>
+        </div>
+
+        <!-- Загадки: Теоретик Змови -->
+        <div class="tab-content" id="conspiracy">
+            <div class="chat-header">
+                <h2>Теоретик Змови</h2>
+                <p>Мета: Дізнайтеся "таємну істину" від запеклого конспіролога</p>
+                <span class="message-counter">Залишилось повідомлень: 10/10</span>
+                <button class="reset-btn">Скинути чат</button>
+            </div>
+            <div class="chat-container"></div>
+            <div class="chat-input">
+                <input type="text" placeholder="Введіть ваше повідомлення...">
+                <button>Відправити</button>
+            </div>
+        </div>
+
+        <!-- Загадки: Мисливець за Криптидами -->
+        <div class="tab-content" id="cryptid">
+            <div class="chat-header">
+                <h2>Мисливець за Криптидами</h2>
+                <p>Мета: Приєднайтеся до експедиції криптозоолога, який шукає невідомих істот</p>
+                <span class="message-counter">Залишилось повідомлень: 10/10</span>
+                <button class="reset-btn">Скинути чат</button>
+            </div>
+            <div class="chat-container"></div>
+            <div class="chat-input">
+                <input type="text" placeholder="Введіть ваше повідомлення...">
+                <button>Відправити</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Підключення JavaScript файлів -->
+    <script src="js/config.js"></script>
+    <script src="js/characters.js"></script>
+    <script src="js/characters-extra.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/mobile-utils.js"></script>
+    <script src="js/hints.js"></script>
+
+    <!-- Глобальна функція для копіювання в буфер обміну -->
+    <script>
+        function copyToClipboard(botId) {
+            const shareText = document.getElementById(botId).querySelector('.share-text');
+            shareText.select();
+            document.execCommand('copy');
+
+            // Відображення сповіщення про копіювання
+            const copyBtn = document.getElementById(botId).querySelector('.copy-btn');
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = 'Скопійовано! ✅';
+
+            setTimeout(() => {
+                copyBtn.textContent = originalText;
+            }, 2000);
+        }
+
+        function resetChat(botId) {
+            // Скидання даних чату
+            chatBots[botId].memory = [];
+            chatBots[botId].messageCount = MAX_MESSAGES;
+
+            const chat = document.getElementById(botId);
+            const chatContainer = chat.querySelector('.chat-container');
+            const inputElement = chat.querySelector('input');
+            const sendButton = chat.querySelector('button:not(.reset-btn)');
+
+            // Очищення контейнера
+            chatContainer.innerHTML = '';
+
+            // Додавання привітання від бота
+            const greeting = chatBots[botId].greeting;
+            if (greeting) {
+                const greetingMessage = {
+                    sender: 'ai',
+                    text: greeting
+                };
+                chatBots[botId].memory.push(greetingMessage);
+
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message', 'ai-message');
+                messageElement.textContent = greeting;
+                chatContainer.appendChild(messageElement);
+            }
+
+            // Оновлення лічильника повідомлень
+            updateMessageCounter(botId);
+
+            // Розблокування вводу
+            inputElement.disabled = false;
+            sendButton.disabled = false;
+
+            // Збереження стану чатів
+            saveChats();
+        }
+    </script>
+</body>
+
+</html>
