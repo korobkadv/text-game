@@ -18,8 +18,5 @@ const GENERATION_CONFIG = {
   maxOutputTokens: 800, // Максимальна довжина відповіді
 };
 
-// Максимальна кількість повідомлень для кожного чату
-const MAX_MESSAGES = 10;
-
 // Таймаут для імітації "думання" ШІ (мілісекунди)
 const THINKING_TIMEOUT = 500;

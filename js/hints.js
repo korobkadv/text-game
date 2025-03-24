@@ -882,6 +882,13 @@ function updateChatHeaderStructure(botId) {
   const chatHeader = document
     .getElementById(botId)
     .querySelector(".chat-header");
+
+  // Перевіряємо, чи вже є кнопка підказки
+  const existingHintBtn = chatHeader.querySelector(".hint-btn");
+  if (existingHintBtn) {
+    return; // Якщо кнопка вже існує, виходимо з функції
+  }
+
   const messageCounter = chatHeader.querySelector(".message-counter");
   const resetBtn = chatHeader.querySelector(".reset-btn");
 
@@ -1127,8 +1134,5 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// Ініціалізація системи підказок після завантаження сторінки
-document.addEventListener("DOMContentLoaded", () => {
-  // Додаємо невелику затримку, щоб переконатися, що інші компоненти вже ініціалізовані
-  setTimeout(initHintSystem, 500);
-});
+// Ініціалізація hintsConfig для доступу з інших модулів
+window.hintsConfig = hintsConfig;
