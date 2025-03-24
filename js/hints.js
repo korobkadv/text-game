@@ -1102,17 +1102,30 @@ function updateHintProgress(botId) {
 }
 
 // Розширення функції sendMessage для оновлення підказок після відправки повідомлення
-const originalSendMessage = window.sendMessage;
-window.sendMessage = function (botId) {
-  const result = originalSendMessage.apply(this, arguments);
+document.addEventListener("DOMContentLoaded", () => {
+  // Додаємо оновлення підказок після надсилання повідомлення
+  // Спостерігаємо за змінами в чатах і оновлюємо підказки коли з'являється нове повідомлення
+  const chatObserver = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
+        // Знаходимо ID бота з батьківського елемента
+        const chatContainer = mutation.target;
+        const tabContent = chatContainer.closest(".tab-content");
+        if (tabContent) {
+          const botId = tabContent.id;
+          setTimeout(() => {
+            updateHintProgress(botId);
+          }, 1000);
+        }
+      }
+    });
+  });
 
-  // Оновлення прогресу в підказках
-  setTimeout(() => {
-    updateHintProgress(botId);
-  }, 1000);
-
-  return result;
-};
+  // Підключаємо спостерігача до всіх контейнерів чатів
+  document.querySelectorAll(".chat-container").forEach((container) => {
+    chatObserver.observe(container, { childList: true });
+  });
+});
 
 // Ініціалізація системи підказок після завантаження сторінки
 document.addEventListener("DOMContentLoaded", () => {

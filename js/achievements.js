@@ -420,12 +420,7 @@ class AchievementManager {
   }
 
   // Обробка перемоги в сценарії
-  handleVictory(
-    characterId,
-    messagesUsed,
-    difficulty = "normal",
-    language = "uk"
-  ) {
+  handleVictory(characterId, messagesUsed, difficulty = "normal") {
     const character = characterId;
 
     // Визначаємо категорію персонажа
@@ -462,10 +457,6 @@ class AchievementManager {
     // Оновлюємо лічильник перемог за складністю
     this.achievements.winsByDifficulty[difficulty] =
       (this.achievements.winsByDifficulty[difficulty] || 0) + 1;
-
-    // Оновлюємо лічильник перемог за мовою
-    this.achievements.winsByLanguage[language] =
-      (this.achievements.winsByLanguage[language] || 0) + 1;
 
     // Зберігаємо кількість повідомлень, використаних для перемоги
     if (
@@ -516,11 +507,7 @@ class AchievementManager {
     ).length;
     this.updateAchievementProgress("fast_talker", fastWins > 0 ? 1 : 0);
 
-    // Multilingual - перемоги різними мовами
-    const languagesWithWins = Object.keys(
-      this.achievements.winsByLanguage
-    ).length;
-    this.updateAchievementProgress("multilingual", languagesWithWins);
+    this.updateAchievementProgress("multilingual", 0);
 
     // Completionist - всі перемоги
     this.updateAchievementProgress(
@@ -550,8 +537,7 @@ const achievementManager = new AchievementManager();
 function registerVictoryEvent(
   characterId,
   messagesUsed,
-  difficulty = "normal",
-  language = "uk"
+  difficulty = "normal"
 ) {
   // Створення і відправлення події перемоги
   const victoryEvent = new CustomEvent("chatGame.victory", {
@@ -559,7 +545,6 @@ function registerVictoryEvent(
       characterId,
       messagesUsed,
       difficulty,
-      language,
     },
   });
 
@@ -576,7 +561,6 @@ window.showGameSummary = function (botId, isVictory) {
   if (isVictory) {
     const messagesUsed = MAX_MESSAGES - chatBots[botId].messageCount;
     const difficulty = window.currentDifficulty || "normal";
-    const language = document.documentElement.lang || "uk";
 
     registerVictoryEvent(botId, messagesUsed, difficulty, language);
   }

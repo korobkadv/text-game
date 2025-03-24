@@ -2,6 +2,152 @@
  * Головний модуль додатку
  */
 
+// Глобальна функція для відправки повідомлень
+// Винесена з initChats() для доступності в інших модулях
+window.sendMessage = async function (botId) {
+  const chatContainer = document
+    .getElementById(botId)
+    .querySelector(".chat-container");
+  const inputElement = document.getElementById(botId).querySelector("input");
+  const sendButton = document
+    .getElementById(botId)
+    .querySelector("button:not(.reset-btn)");
+
+  const messageText = inputElement.value.trim();
+  if (messageText === "") return;
+
+  // Перевірка, чи залишилися спроби
+  if (chatBots[botId].messageCount <= 0) {
+    inputElement.value = "";
+    return;
+  }
+
+  // Додавання повідомлення користувача
+  const userMessage = {
+    sender: "user",
+    text: messageText,
+  };
+  chatBots[botId].memory.push(userMessage);
+
+  const userMessageElement = document.createElement("div");
+  userMessageElement.classList.add("message", "user-message");
+  userMessageElement.textContent = messageText;
+  chatContainer.appendChild(userMessageElement);
+
+  // Зменшення лічильника повідомлень
+  chatBots[botId].messageCount--;
+  updateMessageCounter(botId);
+
+  // Блокування інтерфейсу під час очікування відповіді
+  inputElement.disabled = true;
+  sendButton.disabled = true;
+  const loadingIndicator = document.createElement("div");
+  loadingIndicator.classList.add("message", "ai-message");
+  loadingIndicator.textContent = "Думаю...";
+  chatContainer.appendChild(loadingIndicator);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+
+  // Очищення поля вводу
+  inputElement.value = "";
+
+  try {
+    // Перевірка на перемогу перед API запитом
+    const victory = checkVictory(botId);
+
+    let botResponse;
+    if (victory) {
+      // Використовуємо спеціальне повідомлення про перемогу з API
+      botResponse = await getVictoryResponse(
+        messageText,
+        chatBots[botId].characterPrompt
+      );
+    } else {
+      // Звичайна відповідь від API з урахуванням контексту
+      botResponse = await getContextualResponse(
+        messageText,
+        chatBots[botId].characterPrompt,
+        chatBots[botId].memory,
+        chatBots[botId].name
+      );
+    }
+
+    // Видалення індикатора завантаження
+    chatContainer.removeChild(loadingIndicator);
+
+    // Додавання відповіді AI
+    const aiMessage = {
+      sender: "ai",
+      text: botResponse,
+    };
+    chatBots[botId].memory.push(aiMessage);
+
+    const aiMessageElement = document.createElement("div");
+    aiMessageElement.classList.add("message", "ai-message");
+    aiMessageElement.textContent = botResponse;
+    chatContainer.appendChild(aiMessageElement);
+
+    // Перевірка на перемогу після відповіді AI
+    const victoryAfterResponse = checkVictory(botId);
+
+    // Розблокування інтерфейсу, але тільки якщо не перемога
+    if (!victoryAfterResponse) {
+      inputElement.disabled = false;
+      sendButton.disabled = false;
+    }
+
+    // Перевірка на завершення гри (перемога або використано всі повідомлення)
+    if (victoryAfterResponse || chatBots[botId].messageCount <= 0) {
+      // Показати висновок гри, але перевірити, чи він вже не був показаний
+      if (!chatContainer.querySelector(".game-summary")) {
+        showGameSummary(botId, victoryAfterResponse);
+      }
+    }
+
+    // Прокручування до останнього повідомлення
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  } catch (error) {
+    console.error("Помилка при отриманні відповіді:", error);
+
+    // Видалення індикатора завантаження
+    chatContainer.removeChild(loadingIndicator);
+
+    // Відображення повідомлення про помилку
+    const errorMessage = document.createElement("div");
+    errorMessage.classList.add("message", "ai-message");
+    errorMessage.textContent =
+      "Вибачте, сталася помилка. Будь ласка, спробуйте ще раз пізніше.";
+    chatContainer.appendChild(errorMessage);
+
+    // Розблокування інтерфейсу
+    inputElement.disabled = false;
+    sendButton.disabled = false;
+  }
+
+  // Збереження стану чатів
+  saveChats();
+};
+
+/**
+ * Перевірка і оновлення характеристик персонажів, щоб гарантувати
+ * наявність інструкції використовувати українську мову.
+ */
+function ensureUkrainianLanguageInPrompts() {
+  const requiredInstruction = "Відповідай ЛИШЕ українською мовою.";
+
+  // Перевірка всіх персонажів
+  Object.keys(chatBots).forEach((botId) => {
+    const bot = chatBots[botId];
+    if (
+      bot.characterPrompt &&
+      !bot.characterPrompt.includes(requiredInstruction)
+    ) {
+      // Додаємо інструкцію в кінець промпту
+      bot.characterPrompt = bot.characterPrompt + " " + requiredInstruction;
+      console.log(`Додано мовну інструкцію для бота ${botId}`);
+    }
+  });
+}
+
 // Оновлення HTML після завантаження сторінки
 document.addEventListener("DOMContentLoaded", initApp);
 
@@ -12,6 +158,11 @@ function initApp() {
   // Ініціалізація обробників подій
   initCategoryHandlers();
   initTabHandlers();
+
+  // Перевірка наявності мовної інструкції в усіх промптах
+  ensureUkrainianLanguageInPrompts();
+
+  // Ініціалізація чатів
   initChats();
 }
 
@@ -153,161 +304,18 @@ function initChats() {
     // Оновлення лічильника повідомлень
     updateMessageCounter(botId);
 
-    // Обробка надсилання повідомлення
-    async function sendMessage() {
-      const messageText = inputElement.value.trim();
-      if (messageText === "") return;
-
-      // Перевірка, чи залишилися спроби
-      if (chatBots[botId].messageCount <= 0) {
-        inputElement.value = "";
-        return;
-      }
-
-      // Додавання повідомлення користувача
-      const userMessage = {
-        sender: "user",
-        text: messageText,
-      };
-      chatBots[botId].memory.push(userMessage);
-
-      const userMessageElement = document.createElement("div");
-      userMessageElement.classList.add("message", "user-message");
-      userMessageElement.textContent = messageText;
-      chatContainer.appendChild(userMessageElement);
-
-      // Зменшення лічильника повідомлень
-      chatBots[botId].messageCount--;
-      updateMessageCounter(botId);
-
-      // Блокування інтерфейсу під час очікування відповіді
-      inputElement.disabled = true;
-      sendButton.disabled = true;
-      const loadingIndicator = document.createElement("div");
-      loadingIndicator.classList.add("message", "ai-message");
-      loadingIndicator.textContent = "Думаю...";
-      chatContainer.appendChild(loadingIndicator);
-      chatContainer.scrollTop = chatContainer.scrollHeight;
-
-      // Очищення поля вводу
-      inputElement.value = "";
-
-      try {
-        // Перевірка на перемогу перед API запитом
-        const victory = checkVictory(botId);
-
-        let botResponse;
-        if (victory) {
-          // Використовуємо спеціальне повідомлення про перемогу з API
-          botResponse = await getVictoryResponse(
-            messageText,
-            chatBots[botId].characterPrompt
-          );
-        } else {
-          // Звичайна відповідь від API з урахуванням контексту
-          botResponse = await getContextualResponse(
-            messageText,
-            chatBots[botId].characterPrompt,
-            chatBots[botId].memory,
-            chatBots[botId].name
-          );
-        }
-
-        // Видалення індикатора завантаження
-        chatContainer.removeChild(loadingIndicator);
-
-        // Додавання відповіді AI
-        const aiMessage = {
-          sender: "ai",
-          text: botResponse,
-        };
-        chatBots[botId].memory.push(aiMessage);
-
-        const aiMessageElement = document.createElement("div");
-        aiMessageElement.classList.add("message", "ai-message");
-        aiMessageElement.textContent = botResponse;
-        chatContainer.appendChild(aiMessageElement);
-
-        // Перевірка на перемогу після відповіді AI
-        const victoryAfterResponse = checkVictory(botId);
-
-        // Розблокування інтерфейсу, але тільки якщо не перемога
-        if (!victoryAfterResponse) {
-          inputElement.disabled = false;
-          sendButton.disabled = false;
-        }
-
-        // Перевірка на завершення гри (перемога або використано всі повідомлення)
-        if (victoryAfterResponse || chatBots[botId].messageCount <= 0) {
-          // Показати висновок гри, але перевірити, чи він вже не був показаний
-          if (!chatContainer.querySelector(".game-summary")) {
-            showGameSummary(botId, victoryAfterResponse);
-          }
-        }
-
-        // Прокручування до останнього повідомлення
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-      } catch (error) {
-        console.error("Помилка при отриманні відповіді:", error);
-
-        // Видалення індикатора завантаження
-        chatContainer.removeChild(loadingIndicator);
-
-        // Відображення повідомлення про помилку
-        const errorMessage = document.createElement("div");
-        errorMessage.classList.add("message", "ai-message");
-        errorMessage.textContent =
-          "Вибачте, сталася помилка. Будь ласка, спробуйте ще раз пізніше.";
-        chatContainer.appendChild(errorMessage);
-
-        // Розблокування інтерфейсу
-        inputElement.disabled = false;
-        sendButton.disabled = false;
-      }
-
-      // Збереження стану чатів
-      saveChats();
-    }
-
-    // Обробники подій для форми
-    sendButton.addEventListener("click", sendMessage);
+    // Обробка надсилання повідомлення через глобальну функцію
+    sendButton.addEventListener("click", () => window.sendMessage(botId));
 
     inputElement.addEventListener("keypress", (e) => {
       if (e.key === "Enter") {
-        sendMessage();
+        window.sendMessage(botId);
       }
     });
 
     // Обробник скидання чату
     resetButton.addEventListener("click", () => {
-      chatBots[botId].memory = [];
-      chatBots[botId].messageCount = MAX_MESSAGES;
-      chatContainer.innerHTML = "";
-
-      // Додавання привітання від бота
-      const greeting = chatBots[botId].greeting;
-      if (greeting) {
-        const greetingMessage = {
-          sender: "ai",
-          text: greeting,
-        };
-        chatBots[botId].memory.push(greetingMessage);
-
-        const messageElement = document.createElement("div");
-        messageElement.classList.add("message", "ai-message");
-        messageElement.textContent = greeting;
-        chatContainer.appendChild(messageElement);
-      }
-
-      // Оновлення лічильника повідомлень
-      updateMessageCounter(botId);
-
-      // Розблокування вводу
-      inputElement.disabled = false;
-      sendButton.disabled = false;
-
-      // Збереження стану чатів
-      saveChats();
+      resetChat(botId);
     });
   });
 }
@@ -320,7 +328,9 @@ function updateMessageCounter(botId) {
   const messageCounter = document
     .getElementById(botId)
     .querySelector(".message-counter");
-  messageCounter.textContent = `Залишилось повідомлень: ${chatBots[botId].messageCount}/${MAX_MESSAGES}`;
+  if (messageCounter) {
+    messageCounter.textContent = `Залишилось повідомлень: ${chatBots[botId].messageCount}/${MAX_MESSAGES}`;
+  }
 }
 
 /**
@@ -338,6 +348,22 @@ function showGameSummary(botId, isVictory) {
     detective: "Отримати секретні докази від детектива",
     alien: "Встановити дружній контакт з інопланетянином",
     philosopher: "Переконати філософа у існуванні об'єктивної реальності",
+    dictator: "Переконати диктатора впровадити демократичні реформи",
+    villain:
+      "Переконати професора Катастрофікуса відмовитися від плану захоплення світу",
+    celebrity: "Запросити на побачення популярну кінозірку",
+    vampire: "Запросити стародавнього вампіра на побачення",
+    royalty: "Запросити на побачення прекрасну принцесу",
+    tsundere: "Запросити на побачення дівчину-цундере",
+    dragon: "Приборкати лютого дракона",
+    treasure: "Переконати пірата взяти вас на пошуки скарбів",
+    spaceship: "Переконати ШІ космічного корабля дати вам управління",
+    survival: "Пройти курс виживання під керівництвом сержанта",
+    wizard: "Переконати архімага прийняти вас як учня",
+    spy: "Отримати секретну інформацію від шпигуна",
+    ghost: "Допомогти привиду знайти спокій",
+    conspiracy: "Дізнатися таємну істину від теоретика змов",
+    cryptid: "Приєднатися до експедиції криптозоолога",
   };
 
   // Створення елемента з підсумком гри
@@ -350,17 +376,21 @@ function showGameSummary(botId, isVictory) {
   if (isVictory) {
     summaryTitle = "Вітаємо з перемогою!";
     summaryEmoji = "🏆";
-    summaryText = `Ви успішно виконали завдання: "${scenarioTitles[botId]}"! Ваше вміння переконувати вражає!`;
+    summaryText = `Ви успішно виконали завдання: "${
+      scenarioTitles[botId] || botId
+    }"! Ваше вміння переконувати вражає!`;
   } else {
     summaryTitle = "Спроба не вдалася";
     summaryEmoji = "😢";
-    summaryText = `На жаль, вам не вдалося "${scenarioTitles[botId]}". Але не засмучуйтесь – спробуйте ще раз з новою стратегією!`;
+    summaryText = `На жаль, вам не вдалося "${
+      scenarioTitles[botId] || botId
+    }". Але не засмучуйтесь – спробуйте ще раз з новою стратегією!`;
   }
 
   // Створення тексту для публікації в соціальних мережах
   const shareText = `${summaryEmoji} ${
     isVictory ? "Я переміг" : "Я намагався"
-  } в AI-грі "${scenarioTitles[botId]}"! ${
+  } в AI-грі "${scenarioTitles[botId] || botId}"! ${
     isVictory
       ? "Мені вдалося переконати ШІ! 🎉"
       : "Наступного разу точно вийде! 💪"

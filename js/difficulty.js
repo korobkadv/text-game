@@ -131,11 +131,12 @@ class DifficultyManager {
         chatBots[botId].messageCount = newMessageCount;
 
         // Оновлення відображення лічильника повідомлень
-        const counter = document
-          .getElementById(botId)
-          ?.querySelector(".message-counter");
-        if (counter) {
-          counter.textContent = `Залишилось повідомлень: ${newMessageCount}/${newMessageCount}`;
+        const botElement = document.getElementById(botId);
+        if (botElement) {
+          const counter = botElement.querySelector(".message-counter");
+          if (counter) {
+            counter.textContent = `Залишилось повідомлень: ${newMessageCount}/${newMessageCount}`;
+          }
         }
       }
     });
