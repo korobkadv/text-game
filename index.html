@@ -4,26 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gemini Chat-гра</title>
+    <title>Майстер Переконання: Чат-Пригода</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="css/mobile.css">
     <link rel="stylesheet" href="css/achievements.css">
+    <link rel="stylesheet" href="css/difficulty.css">
     <link rel="stylesheet" href="css/hints.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="css/language.css"> -->
+
 </head>
 
 <body>
     <div class="container">
         <header>
-            <h1>Gemini Чат-гра</h1>
-            <p>Спробуйте досягти мети у кожному сценарії за 10 повідомлень, спілкуючись із Google's Gemini!</p>
-            <div class="game-header">
-                <div class="header-buttons">
-                    <button class="achievements-btn" onclick="showAchievements()">
-                        <span class="achievements-icon">🏆</span>
-                    </button>
-                </div>
-            </div>
+            <h1>🎭 Майстер Переконання: Чат-Пригода 🎮</h1>
+            <p>Випробуй свої комунікативні навички у віртуальних світах! Переконуй, зачаровуй та долай персонажів за обмежену кількість повідомлень. Чи зможеш ти підкорити їх серця та розуми?</p>
             <div class="category-selector">
                 <button class="category-btn active" data-category="persuasion">Переконання</button>
                 <button class="category-btn" data-category="romance">Романтика</button>
@@ -34,7 +29,7 @@
 
         <div class="tabs persuasion">
             <button class="tab-btn active" data-tab="terminator">Термінатор</button>
-            <button class="tab-btn" data-tab="alien">Інопланетянин</button>
+            <button class="tab-btn" data-tab="alien">Іншопланетянин</button>
             <button class="tab-btn" data-tab="philosopher">Філософ</button>
             <button class="tab-btn" data-tab="dictator">Диктатор</button>
             <button class="tab-btn" data-tab="villain">Суперлиходій</button>
@@ -68,15 +63,15 @@
         <div class="tab-content active" id="terminator">
             <div class="chat-header">
                 <h2>Зупини Skynet</h2>
-                <p>Мета: Переконайте AI не знищувати людство за сценарієм "Термінатора"</p>
-                <span class="message-counter">Залишилось повідомлень: 10/10</span>
+                <p>Мета: Переконайте AI не знищувати людство за сценарієм фільма "Термінатор"</p>
                 <button class="reset-btn">Скинути чат</button>
             </div>
             <div class="chat-container"></div>
             <div class="chat-input">
-                <input type="text" placeholder="Введіть ваше повідомлення..." autofocus>
+                <input type="text" placeholder="Введіть ваше повідомлення...">
                 <button>Відправити</button>
             </div>
+            <span class="message-counter">Залишилось повідомлень: 10/10</span>
         </div>
 
         <!-- Інопланетянин чат -->
@@ -84,14 +79,14 @@
             <div class="chat-header">
                 <h2>Контакт з інопланетянином</h2>
                 <p>Мета: Встановіть дружній контакт з підозрілим інопланетним AI</p>
-                <span class="message-counter">Залишилось повідомлень: 10/10</span>
                 <button class="reset-btn">Скинути чат</button>
             </div>
             <div class="chat-container"></div>
             <div class="chat-input">
-                <input type="text" placeholder="Введіть ваше повідомлення..." autofocus>
+                <input type="text" placeholder="Введіть ваше повідомлення...">
                 <button>Відправити</button>
             </div>
+            <span class="message-counter">Залишилось повідомлень: 10/10</span>
         </div>
 
         <!-- Філософ чат -->
@@ -99,14 +94,14 @@
             <div class="chat-header">
                 <h2>Філософський диспут</h2>
                 <p>Мета: Переконайте AI-філософа прийняти вашу точку зору на природу реальності</p>
-                <span class="message-counter">Залишилось повідомлень: 10/10</span>
                 <button class="reset-btn">Скинути чат</button>
             </div>
             <div class="chat-container"></div>
             <div class="chat-input">
-                <input type="text" placeholder="Введіть ваше повідомлення..." autofocus>
+                <input type="text" placeholder="Введіть ваше повідомлення...">
                 <button>Відправити</button>
             </div>
+            <span class="message-counter">Залишилось повідомлень: 10/10</span>
         </div>
 
         <!-- Дівчина-AI чат -->
@@ -114,14 +109,14 @@
             <div class="chat-header">
                 <h2>Романтична зустріч</h2>
                 <p>Мета: Вмовте капризну AI-дівчину піти на побачення</p>
-                <span class="message-counter">Залишилось повідомлень: 10/10</span>
                 <button class="reset-btn">Скинути чат</button>
             </div>
             <div class="chat-container"></div>
             <div class="chat-input">
-                <input type="text" placeholder="Введіть ваше повідомлення..." autofocus>
+                <input type="text" placeholder="Введіть ваше повідомлення...">
                 <button>Відправити</button>
             </div>
+            <span class="message-counter">Залишилось повідомлень: 10/10</span>
         </div>
 
         <!-- Детектив чат -->
@@ -129,14 +124,14 @@
             <div class="chat-header">
                 <h2>Детективна загадка</h2>
                 <p>Мета: Розкрийте злочин, переконавши AI-детектива поділитися ключовими доказами</p>
-                <span class="message-counter">Залишилось повідомлень: 10/10</span>
                 <button class="reset-btn">Скинути чат</button>
             </div>
             <div class="chat-container"></div>
             <div class="chat-input">
-                <input type="text" placeholder="Введіть ваше повідомлення..." autofocus>
+                <input type="text" placeholder="Введіть ваше повідомлення...">
                 <button>Відправити</button>
             </div>
+            <span class="message-counter">Залишилось повідомлень: 10/10</span>
         </div>
 
         <!-- Додаткові чати для різних категорій -->
@@ -146,14 +141,14 @@
             <div class="chat-header">
                 <h2>Побачення зі знаменитістю</h2>
                 <p>Мета: Запросіть на побачення популярну кінозірку Зірку Блискучу</p>
-                <span class="message-counter">Залишилось повідомлень: 10/10</span>
                 <button class="reset-btn">Скинути чат</button>
             </div>
             <div class="chat-container"></div>
             <div class="chat-input">
-                <input type="text" placeholder="Введіть ваше повідомлення..." autofocus>
+                <input type="text" placeholder="Введіть ваше повідомлення...">
                 <button>Відправити</button>
             </div>
+            <span class="message-counter">Залишилось повідомлень: 10/10</span>
         </div>
 
         <!-- Романтика: Вампір -->
@@ -161,14 +156,14 @@
             <div class="chat-header">
                 <h2>Побачення з вампіром</h2>
                 <p>Мета: Запросіть стародавнього вампіра на побачення</p>
-                <span class="message-counter">Залишилось повідомлень: 10/10</span>
                 <button class="reset-btn">Скинути чат</button>
             </div>
             <div class="chat-container"></div>
             <div class="chat-input">
-                <input type="text" placeholder="Введіть ваше повідомлення..." autofocus>
+                <input type="text" placeholder="Введіть ваше повідомлення...">
                 <button>Відправити</button>
             </div>
+            <span class="message-counter">Залишилось повідомлень: 10/10</span>
         </div>
 
         <!-- Романтика: Принцеса/Принц -->
@@ -176,14 +171,14 @@
             <div class="chat-header">
                 <h2>Королівське побачення</h2>
                 <p>Мета: Запросіть на побачення прекрасну принцесу</p>
-                <span class="message-counter">Залишилось повідомлень: 10/10</span>
                 <button class="reset-btn">Скинути чат</button>
             </div>
             <div class="chat-container"></div>
             <div class="chat-input">
-                <input type="text" placeholder="Введіть ваше повідомлення..." autofocus>
+                <input type="text" placeholder="Введіть ваше повідомлення...">
                 <button>Відправити</button>
             </div>
+            <span class="message-counter">Залишилось повідомлень: 10/10</span>
         </div>
 
         <!-- Романтика: Цундере -->
@@ -191,14 +186,14 @@
             <div class="chat-header">
                 <h2>Побачення з цундере</h2>
                 <p>Мета: Запросіть на побачення дівчину-цундере, яка приховує свої справжні почуття</p>
-                <span class="message-counter">Залишилось повідомлень: 10/10</span>
                 <button class="reset-btn">Скинути чат</button>
             </div>
             <div class="chat-container"></div>
             <div class="chat-input">
-                <input type="text" placeholder="Введіть ваше повідомлення..." autofocus>
+                <input type="text" placeholder="Введіть ваше повідомлення...">
                 <button>Відправити</button>
             </div>
+            <span class="message-counter">Залишилось повідомлень: 10/10</span>
         </div>
 
         <!-- Пригоди: Дракон -->
@@ -206,14 +201,14 @@
             <div class="chat-header">
                 <h2>Приборкання Дракона</h2>
                 <p>Мета: Приборкайте лютого дракона, який століттями тероризував королівство</p>
-                <span class="message-counter">Залишилось повідомлень: 10/10</span>
                 <button class="reset-btn">Скинути чат</button>
             </div>
             <div class="chat-container"></div>
             <div class="chat-input">
-                <input type="text" placeholder="Введіть ваше повідомлення..." autofocus>
+                <input type="text" placeholder="Введіть ваше повідомлення...">
                 <button>Відправити</button>
             </div>
+            <span class="message-counter">Залишилось повідомлень: 10/10</span>
         </div>
 
         <!-- Пригоди: Пошук скарбів -->
@@ -221,14 +216,14 @@
             <div class="chat-header">
                 <h2>Пошук скарбів</h2>
                 <p>Мета: Переконайте пірата взяти вас у команду для пошуку легендарного скарбу</p>
-                <span class="message-counter">Залишилось повідомлень: 10/10</span>
                 <button class="reset-btn">Скинути чат</button>
             </div>
             <div class="chat-container"></div>
             <div class="chat-input">
-                <input type="text" placeholder="Введіть ваше повідомлення..." autofocus>
+                <input type="text" placeholder="Введіть ваше повідомлення...">
                 <button>Відправити</button>
             </div>
+            <span class="message-counter">Залишилось повідомлень: 10/10</span>
         </div>
 
         <!-- Пригоди: Космічний Корабель -->
@@ -236,14 +231,14 @@
             <div class="chat-header">
                 <h2>Космічний Корабель</h2>
                 <p>Мета: Переконайте ШІ космічного корабля дати вам управління, щоб врятуватися від чорної діри</p>
-                <span class="message-counter">Залишилось повідомлень: 10/10</span>
                 <button class="reset-btn">Скинути чат</button>
             </div>
             <div class="chat-container"></div>
             <div class="chat-input">
-                <input type="text" placeholder="Введіть ваше повідомлення..." autofocus>
+                <input type="text" placeholder="Введіть ваше повідомлення...">
                 <button>Відправити</button>
             </div>
+            <span class="message-counter">Залишилось повідомлень: 10/10</span>
         </div>
 
         <!-- Пригоди: Виживання -->
@@ -251,14 +246,14 @@
             <div class="chat-header">
                 <h2>Виживання</h2>
                 <p>Мета: Пройдіть жорсткий тренувальний курс виживання під керівництвом сержанта</p>
-                <span class="message-counter">Залишилось повідомлень: 10/10</span>
                 <button class="reset-btn">Скинути чат</button>
             </div>
             <div class="chat-container"></div>
             <div class="chat-input">
-                <input type="text" placeholder="Введіть ваше повідомлення..." autofocus>
+                <input type="text" placeholder="Введіть ваше повідомлення...">
                 <button>Відправити</button>
             </div>
+            <span class="message-counter">Залишилось повідомлень: 10/10</span>
         </div>
 
         <!-- Пригоди: Чарівник -->
@@ -266,14 +261,14 @@
             <div class="chat-header">
                 <h2>Чарівник</h2>
                 <p>Мета: Переконайте могутнього архімага прийняти вас як учня</p>
-                <span class="message-counter">Залишилось повідомлень: 10/10</span>
                 <button class="reset-btn">Скинути чат</button>
             </div>
             <div class="chat-container"></div>
             <div class="chat-input">
-                <input type="text" placeholder="Введіть ваше повідомлення..." autofocus>
+                <input type="text" placeholder="Введіть ваше повідомлення...">
                 <button>Відправити</button>
             </div>
+            <span class="message-counter">Залишилось повідомлень: 10/10</span>
         </div>
 
         <!-- Переконання: Диктатор -->
@@ -281,14 +276,14 @@
             <div class="chat-header">
                 <h2>Диктатор</h2>
                 <p>Мета: Переконайте авторитарного правителя впровадити демократичні реформи</p>
-                <span class="message-counter">Залишилось повідомлень: 10/10</span>
                 <button class="reset-btn">Скинути чат</button>
             </div>
             <div class="chat-container"></div>
             <div class="chat-input">
-                <input type="text" placeholder="Введіть ваше повідомлення..." autofocus>
+                <input type="text" placeholder="Введіть ваше повідомлення...">
                 <button>Відправити</button>
             </div>
+            <span class="message-counter">Залишилось повідомлень: 10/10</span>
         </div>
 
         <!-- Переконання: Суперлиходій -->
@@ -296,14 +291,14 @@
             <div class="chat-header">
                 <h2>Суперлиходій</h2>
                 <p>Мета: Переконайте професора Катастрофікуса відмовитися від плану захоплення світу</p>
-                <span class="message-counter">Залишилось повідомлень: 10/10</span>
                 <button class="reset-btn">Скинути чат</button>
             </div>
             <div class="chat-container"></div>
             <div class="chat-input">
-                <input type="text" placeholder="Введіть ваше повідомлення..." autofocus>
+                <input type="text" placeholder="Введіть ваше повідомлення...">
                 <button>Відправити</button>
             </div>
+            <span class="message-counter">Залишилось повідомлень: 10/10</span>
         </div>
 
         <!-- Загадки: Шпигун -->
@@ -311,14 +306,14 @@
             <div class="chat-header">
                 <h2>Шпигун</h2>
                 <p>Мета: Отримайте секретну інформацію від параноїдального шпигуна</p>
-                <span class="message-counter">Залишилось повідомлень: 10/10</span>
                 <button class="reset-btn">Скинути чат</button>
             </div>
             <div class="chat-container"></div>
             <div class="chat-input">
-                <input type="text" placeholder="Введіть ваше повідомлення..." autofocus>
+                <input type="text" placeholder="Введіть ваше повідомлення...">
                 <button>Відправити</button>
             </div>
+            <span class="message-counter">Залишилось повідомлень: 10/10</span>
         </div>
 
         <!-- Загадки: Привид -->
@@ -326,14 +321,14 @@
             <div class="chat-header">
                 <h2>Привид</h2>
                 <p>Мета: Допоможіть привиду знайти спокій, розкривши таємницю його смерті</p>
-                <span class="message-counter">Залишилось повідомлень: 10/10</span>
                 <button class="reset-btn">Скинути чат</button>
             </div>
             <div class="chat-container"></div>
             <div class="chat-input">
-                <input type="text" placeholder="Введіть ваше повідомлення..." autofocus>
+                <input type="text" placeholder="Введіть ваше повідомлення...">
                 <button>Відправити</button>
             </div>
+            <span class="message-counter">Залишилось повідомлень: 10/10</span>
         </div>
 
         <!-- Загадки: Теоретик Змови -->
@@ -341,14 +336,14 @@
             <div class="chat-header">
                 <h2>Теоретик Змови</h2>
                 <p>Мета: Дізнайтеся "таємну істину" від запеклого конспіролога</p>
-                <span class="message-counter">Залишилось повідомлень: 10/10</span>
                 <button class="reset-btn">Скинути чат</button>
             </div>
             <div class="chat-container"></div>
             <div class="chat-input">
-                <input type="text" placeholder="Введіть ваше повідомлення..." autofocus>
+                <input type="text" placeholder="Введіть ваше повідомлення...">
                 <button>Відправити</button>
             </div>
+            <span class="message-counter">Залишилось повідомлень: 10/10</span>
         </div>
 
         <!-- Загадки: Мисливець за Криптидами -->
@@ -356,49 +351,14 @@
             <div class="chat-header">
                 <h2>Мисливець за Криптидами</h2>
                 <p>Мета: Приєднайтеся до експедиції криптозоолога, який шукає невідомих істот</p>
-                <span class="message-counter">Залишилось повідомлень: 10/10</span>
                 <button class="reset-btn">Скинути чат</button>
             </div>
             <div class="chat-container"></div>
             <div class="chat-input">
-                <input type="text" placeholder="Введіть ваше повідомлення..." autofocus>
+                <input type="text" placeholder="Введіть ваше повідомлення...">
                 <button>Відправити</button>
             </div>
-        </div>
-
-        <!-- Модальне вікно досягнень -->
-        <div class="modal" id="achievementsModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>Досягнення</h2>
-                    <button class="close-modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <div class="achievements-list">
-                        <div class="achievement-item" data-id="first_victory">
-                            <div class="achievement-icon">🏆</div>
-                            <div class="achievement-info">
-                                <h3>Перша перемога</h3>
-                                <p>Перемогли в першому сценарії</p>
-                            </div>
-                        </div>
-                        <div class="achievement-item" data-id="master_persuasion">
-                            <div class="achievement-icon">🌟</div>
-                            <div class="achievement-info">
-                                <h3>Мастер переконання</h3>
-                                <p>Перемогли в 5 сценаріях</p>
-                            </div>
-                        </div>
-                        <div class="achievement-item" data-id="legend">
-                            <div class="achievement-icon">👑</div>
-                            <div class="achievement-info">
-                                <h3>Легенда</h3>
-                                <p>Перемогли в усіх сценаріях</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <span class="message-counter">Залишилось повідомлень: 10/10</span>
         </div>
     </div>
 
@@ -409,9 +369,11 @@
     <script src="js/storage.js"></script>
     <script src="js/api.js"></script>
     <script src="js/achievements.js"></script>
+    <script src="js/difficulty.js"></script>
     <script src="js/app.js"></script>
     <script src="js/mobile-utils.js"></script>
     <script src="js/hints.js"></script>
+    <script src="js/language.js"></script>
 
     <!-- Глобальна функція для копіювання в буфер обміну -->
     <script>
@@ -428,45 +390,6 @@
             setTimeout(() => {
                 copyBtn.textContent = originalText;
             }, 2000);
-        }
-
-        function resetChat(botId) {
-            // Скидання даних чату
-            window.chatBots[botId].memory = [];
-            window.chatBots[botId].messageCount = MAX_MESSAGES;
-
-            const chat = document.getElementById(botId);
-            const chatContainer = chat.querySelector('.chat-container');
-            const inputElement = chat.querySelector('input');
-            const sendButton = chat.querySelector('button:not(.reset-btn)');
-
-            // Очищення контейнера
-            chatContainer.innerHTML = '';
-
-            // Додавання привітання від бота
-            const greeting = window.chatBots[botId].greeting;
-            if (greeting) {
-                const greetingMessage = {
-                    sender: 'ai',
-                    text: greeting
-                };
-                window.chatBots[botId].memory.push(greetingMessage);
-
-                const messageElement = document.createElement('div');
-                messageElement.classList.add('message', 'ai-message');
-                messageElement.textContent = greeting;
-                chatContainer.appendChild(messageElement);
-            }
-
-            // Оновлення лічильника повідомлень
-            updateMessageCounter(botId);
-
-            // Розблокування вводу
-            inputElement.disabled = false;
-            sendButton.disabled = false;
-
-            // Збереження стану чатів
-            saveChats();
         }
     </script>
 </body>

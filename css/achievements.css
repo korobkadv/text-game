@@ -1,4 +1,25 @@
-/* Стилі для системи досягнень */
+/* Стилі для системи досягнень у Flat Design */
+
+/* Кнопка досягнень в шапці */
+.achievements-button {
+    background-color: var(--warning-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all var(--transition-speed) ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.achievements-button:hover {
+    background-color: #d35400;
+    transform: translateY(-2px);
+}
 
 /* Модальне вікно досягнень */
 .achievements-modal {
@@ -7,13 +28,13 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1001;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity var(--transition-speed) ease;
 }
 
 .achievements-modal.active {
@@ -25,15 +46,16 @@
 }
 
 .achievements-modal-content {
-    background-color: #fff;
-    border-radius: 10px;
+    background-color: white;
+    border-radius: var(--border-radius);
     width: 90%;
-    max-width: 800px;
+    max-width: 900px;
     max-height: 90vh;
     overflow-y: auto;
-    position: relative;
-    transform: translateY(20px);
-    transition: transform 0.3s ease;
+    box-shadow: none;
+    transform: translateY(-20px);
+    transition: transform var(--transition-speed) ease;
+    border: 1px solid var(--secondary-light);
 }
 
 .achievements-modal.active .achievements-modal-content {
@@ -41,115 +63,106 @@
 }
 
 .achievements-modal-header {
-    padding: 20px;
-    border-bottom: 1px solid #eee;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
 }
 
 .achievements-modal-header h2 {
     margin: 0;
-    color: #333;
+    font-size: 1.5rem;
+    font-weight: 500;
 }
 
 .achievements-close-btn {
     background: none;
     border: none;
-    font-size: 24px;
+    color: white;
+    font-size: 1.5rem;
     cursor: pointer;
-    color: #666;
-    padding: 0;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: background-color 0.2s ease;
+    transition: opacity var(--transition-speed) ease;
 }
 
 .achievements-close-btn:hover {
-    background-color: #f0f0f0;
+    opacity: 0.8;
 }
 
 .achievements-modal-body {
-    padding: 20px;
+    padding: 1.5rem;
 }
 
 .achievements-summary {
-    margin-bottom: 20px;
-    padding: 15px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background-color: var(--light-color);
+    border-radius: var(--border-radius);
+    text-align: center;
+    border: none;
 }
 
 .achievements-total {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    font-size: 1.2rem;
+    color: var(--dark-color);
 }
 
 .achievements-total-count {
-    font-size: 24px;
-    font-weight: bold;
-    color: #007bff;
-}
-
-.achievements-total-text {
-    color: #666;
-}
-
-.achievements-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--primary-color);
 }
 
 .achievements-category {
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
 }
 
 .achievements-category-title {
-    margin: 0 0 15px 0;
-    color: #333;
-    font-size: 18px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #eee;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--secondary-light);
+    color: var(--dark-color);
+    font-weight: 500;
 }
 
 .achievements-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
 }
 
 .achievement-card {
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    padding: 15px;
     display: flex;
-    gap: 15px;
-    transition: transform 0.2s ease;
+    padding: 1.25rem;
+    background-color: white;
+    border-radius: var(--border-radius);
+    transition: transform var(--transition-speed) ease;
+    border-left: 3px solid var(--success-color);
+    box-shadow: none;
+    border: 1px solid var(--secondary-light);
+    border-left-width: 4px;
 }
 
 .achievement-card:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: none;
+    background-color: var(--light-color);
+}
+
+.achievement-card.achievement-locked {
+    opacity: 0.7;
+    background-color: white;
+    border-left-color: var(--secondary-color);
 }
 
 .achievement-card-icon {
-    font-size: 24px;
-    width: 40px;
-    height: 40px;
+    font-size: 2rem;
+    margin-right: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #fff;
-    border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .achievement-card-content {
@@ -157,103 +170,91 @@
 }
 
 .achievement-card-title {
-    margin: 0 0 5px 0;
-    color: #333;
-    font-size: 16px;
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--dark-color);
+}
+
+.achievement-card.achievement-locked .achievement-card-title::after {
+    content: " 🔒";
+    font-size: 0.9rem;
 }
 
 .achievement-card-desc {
-    margin: 0 0 10px 0;
-    color: #666;
-    font-size: 14px;
+    margin: 0 0 0.8rem 0;
+    font-size: 0.9rem;
+    color: var(--secondary-color);
 }
 
 .achievement-card-progress {
-    margin-top: 10px;
+    margin-bottom: 0.8rem;
 }
 
 .achievement-progress-bar {
-    height: 4px;
-    background-color: #e9ecef;
-    border-radius: 2px;
+    height: 8px;
+    background-color: var(--light-color);
+    border-radius: 4px;
     overflow: hidden;
-    margin-bottom: 5px;
+    margin-bottom: 0.3rem;
 }
 
 .achievement-progress-fill {
     height: 100%;
-    background-color: #007bff;
-    transition: width 0.3s ease;
-}
-
-.achievement-progress-text {
-    font-size: 12px;
-    color: #666;
-}
-
-.achievement-card-reward {
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px solid #eee;
-    font-size: 12px;
-    color: #28a745;
-}
-
-.achievement-locked {
-    opacity: 0.7;
-}
-
-.achievement-locked .achievement-card-icon {
-    background-color: #e9ecef;
-    color: #adb5bd;
-}
-
-.achievement-locked .achievement-card-title {
-    color: #adb5bd;
-}
-
-.achievement-locked .achievement-card-desc {
-    color: #adb5bd;
-}
-
-.achievement-locked .achievement-progress-bar {
-    background-color: #dee2e6;
+    background-color: var(--success-color);
+    border-radius: 0;
+    transition: width var(--transition-speed) ease;
 }
 
 .achievement-locked .achievement-progress-fill {
-    background-color: #adb5bd;
+    background-color: var(--secondary-color);
 }
 
-/* Стилі для сповіщень про досягнення */
+.achievement-progress-text {
+    font-size: 0.8rem;
+    color: var(--secondary-color);
+    text-align: right;
+}
+
+.achievement-card-reward {
+    font-size: 0.9rem;
+    color: var(--success-color);
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--secondary-light);
+}
+
+/* Сповіщення про розблокування досягнення */
 .achievement-notification {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: flex;
-    gap: 15px;
-    max-width: 400px;
-    transform: translateX(120%);
-    transition: transform 0.3s ease;
+    background-color: white;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    box-shadow: none;
+    max-width: 350px;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: transform 0.5s ease, opacity 0.5s ease;
     z-index: 1000;
+    border-left: 4px solid var(--success-color);
+    border: 1px solid var(--secondary-light);
+    border-left-width: 4px;
 }
 
 .achievement-notification.show {
     transform: translateX(0);
+    opacity: 1;
 }
 
 .achievement-icon {
-    font-size: 24px;
-    width: 40px;
-    height: 40px;
+    font-size: 2.5rem;
+    margin-right: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #f8f9fa;
-    border-radius: 50%;
 }
 
 .achievement-info {
@@ -261,76 +262,79 @@
 }
 
 .achievement-title {
-    font-size: 14px;
-    color: #28a745;
-    margin-bottom: 5px;
+    font-weight: 600;
+    color: var(--success-color);
+    margin-bottom: 0.3rem;
 }
 
 .achievement-name {
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 5px;
+    font-weight: 500;
+    margin-bottom: 0.3rem;
 }
 
 .achievement-desc {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    margin-bottom: 0.5rem;
 }
 
 .achievement-reward {
-    font-size: 12px;
-    color: #28a745;
+    font-size: 0.8rem;
+    color: var(--primary-color);
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--secondary-light);
+    margin-top: 0.5rem;
 }
 
-/* Медіа-запити для адаптивності */
+/* Адаптивні стилі */
 @media (max-width: 768px) {
-    .achievements-modal-content {
-        width: 95%;
-        margin: 10px;
-    }
-
     .achievements-grid {
         grid-template-columns: 1fr;
     }
 
+    .achievement-card {
+        padding: 1rem;
+    }
+
+    .achievements-modal-content {
+        width: 95%;
+        max-height: 95vh;
+    }
+
     .achievement-notification {
-        max-width: 90%;
-        right: 5%;
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
     }
 }
 
-/* Анімації */
+/* Анімація для досягнень */
 @keyframes achievement-glow {
-    0%,
-    100% {
+    0% {
         box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
     }
-
     50% {
-        box-shadow: 0 0 20px rgba(76, 175, 80, 0.8);
+        box-shadow: 0 0 20px rgba(76, 175, 80, 0.7);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
     }
 }
 
 .achievement-card:not(.achievement-locked):hover {
-    animation: achievement-glow 2s infinite;
+    border-color: var(--success-color);
+    background-color: rgba(46, 204, 113, 0.05);
 }
 
-/* Значок нового досягнення */
 .achievement-new-badge {
     position: absolute;
-    top: -10px;
-    right: -10px;
-    background-color: #f44336;
+    top: 10px;
+    right: 10px;
+    background-color: var(--warning-color);
     color: white;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.7rem;
-    font-weight: bold;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: var(--border-radius);
+    padding: 2px 8px;
+    font-size: 0.8rem;
+    font-weight: 500;
 }

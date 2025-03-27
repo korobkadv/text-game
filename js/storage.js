@@ -7,10 +7,12 @@
  */
 function saveChats() {
   const chatsToSave = {};
-  Object.keys(window.chatBots).forEach((botId) => {
+  Object.keys(chatBots).forEach((botId) => {
     chatsToSave[botId] = {
-      memory: window.chatBots[botId].memory,
-      messageCount: window.chatBots[botId].messageCount || MAX_MESSAGES,
+      memory: chatBots[botId].memory,
+      messageCount: chatBots[botId].messageCount || MAX_MESSAGES,
+      gameCompleted: chatBots[botId].gameCompleted || false,
+      gameResult: chatBots[botId].gameResult || null,
     };
   });
   localStorage.setItem(STORAGE_KEY, JSON.stringify(chatsToSave));
@@ -24,10 +26,12 @@ function loadChats() {
   if (savedChats) {
     const chats = JSON.parse(savedChats);
     Object.keys(chats).forEach((botId) => {
-      if (window.chatBots[botId]) {
-        window.chatBots[botId].memory = chats[botId].memory || [];
-        window.chatBots[botId].messageCount =
+      if (chatBots[botId]) {
+        chatBots[botId].memory = chats[botId].memory || [];
+        chatBots[botId].messageCount =
           chats[botId].messageCount || MAX_MESSAGES;
+        chatBots[botId].gameCompleted = chats[botId].gameCompleted || false;
+        chatBots[botId].gameResult = chats[botId].gameResult || null;
       }
     });
   }
@@ -39,5 +43,5 @@ function loadChats() {
  * @returns {boolean} - true, якщо досягнуто перемоги
  */
 function checkVictory(botId) {
-  return window.chatBots[botId].victoryCheck(window.chatBots[botId].memory);
+  return chatBots[botId].victoryCheck(chatBots[botId].memory);
 }

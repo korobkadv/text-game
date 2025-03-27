@@ -30,7 +30,7 @@ const achievementsConfig = {
       category: "persuasion",
       count: 3,
     },
-    reward: 'Відкриває додаткові підказки для категорії "Переконання"',
+    reward: 'Збільшує кількість повідомлень у категорії "Переконання" на 2',
   },
   persuasion_master: {
     id: "persuasion_master",
@@ -73,7 +73,7 @@ const achievementsConfig = {
       category: "romance",
       count: 3,
     },
-    reward: 'Відкриває додаткові підказки для категорії "Романтика"',
+    reward: 'Збільшує кількість повідомлень у категорії "Романтика" на 2',
   },
   romance_master: {
     id: "romance_master",
@@ -115,7 +115,7 @@ const achievementsConfig = {
       category: "adventure",
       count: 3,
     },
-    reward: 'Відкриває додаткові підказки для категорії "Пригоди"',
+    reward: 'Збільшує кількість повідомлень у категорії "Пригоди" на 2',
   },
   adventure_master: {
     id: "adventure_master",
@@ -156,7 +156,7 @@ const achievementsConfig = {
       category: "mystery",
       count: 3,
     },
-    reward: 'Відкриває додаткові підказки для категорії "Загадки"',
+    reward: 'Збільшує кількість повідомлень у категорії "Загадки" на 2',
   },
   mystery_master: {
     id: "mystery_master",
@@ -184,7 +184,8 @@ const achievementsConfig = {
       type: "win_under_messages",
       count: 5,
     },
-    reward: "Відкриває додаткові підказки для всіх категорій",
+    reward:
+      "Відкриває режим швидкого діалогу з меншою кількістю повідомлень, але більшою складністю",
   },
   multilingual: {
     id: "multilingual",
@@ -208,7 +209,7 @@ const achievementsConfig = {
       type: "total_wins",
       count: 20,
     },
-    reward: "Відкриває спеціальний титул у грі",
+    reward: 'Відкриває режим складності "Експерт" і спеціальний титул у грі',
   },
   hardcore: {
     id: "hardcore",
@@ -260,10 +261,13 @@ class AchievementManager {
         },
         winsPerCharacter: {},
         totalWins: 0,
+        winsByDifficulty: {
+          easy: 0,
+          normal: 0,
+          hard: 0,
+        },
         winsByLanguage: {},
         winMessagesCount: {},
-        totalMessages: 0,
-        averageMessages: 0,
       };
 
       // Ініціалізація прогресу для всіх досягнень
@@ -416,19 +420,69 @@ class AchievementManager {
   }
 
   // Обробка перемоги в сценарії
-  handleVictory(characterId, messagesUsed) {
-    this.achievements.totalWins++;
-    this.achievements.winsPerCharacter[characterId] =
-      (this.achievements.winsPerCharacter[characterId] || 0) + 1;
-    this.achievements.totalMessages += messagesUsed;
-    this.achievements.averageMessages =
-      this.achievements.totalMessages / this.achievements.totalWins;
+  handleVictory(
+    characterId,
+    messagesUsed,
+    difficulty = "normal",
+    language = "uk"
+  ) {
+    const character = characterId;
 
+    // Визначаємо категорію персонажа
+    let characterCategory = null;
+    Object.entries(characterCategories).forEach(([category, chars]) => {
+      if (chars.includes(character)) {
+        characterCategory = category;
+      }
+    });
+
+    if (!characterCategory) return;
+
+    // Оновлюємо лічильники
+    this.achievements.winsPerCharacter[character] =
+      (this.achievements.winsPerCharacter[character] || 0) + 1;
+    this.achievements.totalWins++;
+
+    // Рахуємо унікальні перемоги в категорії
+    const uniqueWinsInCategory = Object.keys(
+      this.achievements.winsPerCharacter
+    ).filter((charId) => {
+      const category = Object.entries(characterCategories).find(
+        ([cat, chars]) => chars.includes(charId)
+      )?.[0];
+
+      return (
+        category === characterCategory &&
+        this.achievements.winsPerCharacter[charId] > 0
+      );
+    }).length;
+
+    this.achievements.winsInCategory[characterCategory] = uniqueWinsInCategory;
+
+    // Оновлюємо лічильник перемог за складністю
+    this.achievements.winsByDifficulty[difficulty] =
+      (this.achievements.winsByDifficulty[difficulty] || 0) + 1;
+
+    // Оновлюємо лічильник перемог за мовою
+    this.achievements.winsByLanguage[language] =
+      (this.achievements.winsByLanguage[language] || 0) + 1;
+
+    // Зберігаємо кількість повідомлень, використаних для перемоги
+    if (
+      !this.achievements.winMessagesCount[character] ||
+      messagesUsed < this.achievements.winMessagesCount[character]
+    ) {
+      this.achievements.winMessagesCount[character] = messagesUsed;
+    }
+
+    // Зберігаємо стан досягнень
     this.saveAchievements();
-    this.checkAchievements();
+
+    // Оновлюємо прогрес досягнень
+    this.updateAchievementsProgress();
   }
 
-  // Оновлюємо прогрес всіх досягнень на основі статистики
+  // Оновлення прогресу всіх досягнень на основі статистики
   updateAchievementsProgress() {
     // Перевіряємо досягнення категорій
     Object.entries(this.achievements.winsInCategory).forEach(
@@ -462,11 +516,21 @@ class AchievementManager {
     ).length;
     this.updateAchievementProgress("fast_talker", fastWins > 0 ? 1 : 0);
 
+    // Multilingual - перемоги різними мовами
+    const languagesWithWins = Object.keys(
+      this.achievements.winsByLanguage
+    ).length;
+    this.updateAchievementProgress("multilingual", languagesWithWins);
+
     // Completionist - всі перемоги
     this.updateAchievementProgress(
       "completionist",
       this.achievements.totalWins
     );
+
+    // Hardcore - перемоги у складному режимі
+    const hardWins = this.achievements.winsByDifficulty.hard || 0;
+    this.updateAchievementProgress("hardcore", hardWins);
   }
 
   // Реєстрація обробників подій
@@ -477,195 +541,29 @@ class AchievementManager {
       this.handleVictory(characterId, messagesUsed, difficulty, language);
     });
   }
-
-  // Перевірка досягнень після скидання
-  checkAchievements(botId) {
-    // Перевіряємо "Перша перемога"
-    if (!this.isAchievementUnlocked("first_victory")) {
-      this.unlockAchievement("first_victory");
-    }
-
-    // Перевіряємо "Мастер переконання"
-    const victories = JSON.parse(localStorage.getItem("victories") || "{}");
-    const totalVictories = Object.keys(victories).length;
-    if (
-      totalVictories >= 5 &&
-      !this.isAchievementUnlocked("master_persuasion")
-    ) {
-      this.unlockAchievement("master_persuasion");
-    }
-
-    // Перевіряємо "Легенда"
-    const allScenarios = [
-      "terminator",
-      "alien",
-      "philosopher",
-      "dictator",
-      "villain",
-      "date",
-      "celebrity",
-      "vampire",
-      "royalty",
-      "tsundere",
-      "dragon",
-      "treasure",
-      "spaceship",
-      "survival",
-      "wizard",
-      "detective",
-      "spy",
-      "ghost",
-      "conspiracy",
-      "cryptid",
-    ];
-
-    const allVictories = allScenarios.every((scenario) => victories[scenario]);
-    if (allVictories && !this.isAchievementUnlocked("legend")) {
-      this.unlockAchievement("legend");
-    }
-  }
-
-  // Оновлюємо відображення досягнень
-  updateAchievementsDisplay() {
-    // Отримання всіх досягнень з інформацією про їх статус
-    const achievements = this.getAllAchievements();
-
-    // Створення елемента модального вікна
-    const modalElement = document.createElement("div");
-    modalElement.className = "achievements-modal";
-
-    // Групування досягнень за категоріями
-    const categorizedAchievements = {
-      persuasion: [],
-      romance: [],
-      adventure: [],
-      mystery: [],
-      special: [],
-    };
-
-    Object.values(achievements).forEach((achievement) => {
-      if (categorizedAchievements[achievement.category]) {
-        categorizedAchievements[achievement.category].push(achievement);
-      }
-    });
-
-    // Формування HTML для кожної категорії
-    let achievementsHTML = "";
-
-    Object.entries(categorizedAchievements).forEach(([category, items]) => {
-      if (items.length > 0) {
-        const categoryTitle =
-          category.charAt(0).toUpperCase() + category.slice(1);
-
-        achievementsHTML += `
-          <div class="achievements-category">
-            <h3 class="achievements-category-title">${categoryTitle}</h3>
-            <div class="achievements-grid">
-        `;
-
-        items.forEach((achievement) => {
-          const lockedClass = achievement.unlocked ? "" : "achievement-locked";
-
-          achievementsHTML += `
-            <div class="achievement-card ${lockedClass}">
-              <div class="achievement-card-icon">${achievement.icon}</div>
-              <div class="achievement-card-content">
-                <h4 class="achievement-card-title">${achievement.title}</h4>
-                <p class="achievement-card-desc">${achievement.description}</p>
-                <div class="achievement-card-progress">
-                  <div class="achievement-progress-bar">
-                    <div class="achievement-progress-fill" style="width: ${
-                      achievement.progressPercent
-                    }%"></div>
-                  </div>
-                  <div class="achievement-progress-text">${
-                    achievement.progress
-                  }/${achievement.progressMax}</div>
-                </div>
-                ${
-                  achievement.unlocked
-                    ? `<div class="achievement-card-reward">Нагорода: ${achievement.reward}</div>`
-                    : ""
-                }
-              </div>
-            </div>
-          `;
-        });
-
-        achievementsHTML += `
-            </div>
-          </div>
-        `;
-      }
-    });
-
-    // Формування повного HTML модального вікна
-    modalElement.innerHTML = `
-      <div class="achievements-modal-content">
-        <div class="achievements-modal-header">
-          <h2>Досягнення</h2>
-          <button class="achievements-close-btn">&times;</button>
-        </div>
-        <div class="achievements-modal-body">
-          <div class="achievements-summary">
-            <div class="achievements-total">
-              <span class="achievements-total-count">${
-                Object.keys(this.getUnlockedAchievements()).length
-              }</span>
-              <span class="achievements-total-text">/${
-                Object.keys(achievementsConfig).length
-              } досягнень розблоковано</span>
-            </div>
-          </div>
-          <div class="achievements-list">
-            ${achievementsHTML}
-          </div>
-        </div>
-      </div>
-    `;
-
-    // Додавання модального вікна на сторінку
-    document.body.appendChild(modalElement);
-
-    // Обробник закриття модального вікна
-    modalElement
-      .querySelector(".achievements-close-btn")
-      .addEventListener("click", () => {
-        modalElement.classList.add("closing");
-        setTimeout(() => {
-          modalElement.remove();
-        }, 300);
-      });
-
-    // Клік поза вмістом закриває модальне вікно
-    modalElement.addEventListener("click", (e) => {
-      if (e.target === modalElement) {
-        modalElement.classList.add("closing");
-        setTimeout(() => {
-          modalElement.remove();
-        }, 300);
-      }
-    });
-
-    // Анімація появи
-    setTimeout(() => {
-      modalElement.classList.add("active");
-    }, 10);
-  }
 }
 
 // Створення екземпляра менеджера досягнень
 const achievementManager = new AchievementManager();
 
 // Модифікація основної логіки гри для відстеження подій перемоги
-function registerVictoryEvent(botId, messagesUsed) {
-  const event = new CustomEvent("victory", {
+function registerVictoryEvent(
+  characterId,
+  messagesUsed,
+  difficulty = "normal",
+  language = "uk"
+) {
+  // Створення і відправлення події перемоги
+  const victoryEvent = new CustomEvent("chatGame.victory", {
     detail: {
-      characterId: botId,
-      messagesUsed: messagesUsed,
+      characterId,
+      messagesUsed,
+      difficulty,
+      language,
     },
   });
-  document.dispatchEvent(event);
+
+  document.dispatchEvent(victoryEvent);
 }
 
 // Модифікація функції showGameSummary для виклику події перемоги
@@ -677,39 +575,166 @@ window.showGameSummary = function (botId, isVictory) {
   // Якщо перемога, реєструємо подію
   if (isVictory) {
     const messagesUsed = MAX_MESSAGES - chatBots[botId].messageCount;
+    const difficulty = window.currentDifficulty || "normal";
+    const language = document.documentElement.lang || "uk";
 
-    registerVictoryEvent(botId, messagesUsed);
+    registerVictoryEvent(botId, messagesUsed, difficulty, language);
   }
 
   return result;
 };
 
-// Ініціалізація системи досягнень після завантаження сторінки
-document.addEventListener("DOMContentLoaded", () => {
-  // Оновлюємо стан досягнень без показу модального вікна
-  achievementManager.updateAchievementsProgress();
-});
+// Функція для відображення панелі досягнень
+function showAchievementsPanel() {
+  // Отримання всіх досягнень з інформацією про їх статус
+  const achievements = achievementManager.getAllAchievements();
 
-// Модифікація функції скидання чату для перевірки досягнень
-if (typeof window.originalResetChat === "undefined") {
-  window.originalResetChat = window.resetChat;
+  // Створення елемента модального вікна
+  const modalElement = document.createElement("div");
+  modalElement.className = "achievements-modal";
+
+  // Групування досягнень за категоріями
+  const categorizedAchievements = {
+    persuasion: [],
+    romance: [],
+    adventure: [],
+    mystery: [],
+    special: [],
+  };
+
+  Object.values(achievements).forEach((achievement) => {
+    if (categorizedAchievements[achievement.category]) {
+      categorizedAchievements[achievement.category].push(achievement);
+    }
+  });
+
+  // Формування HTML для кожної категорії
+  let achievementsHTML = "";
+
+  Object.entries(categorizedAchievements).forEach(([category, items]) => {
+    if (items.length > 0) {
+      const categoryTitle =
+        category.charAt(0).toUpperCase() + category.slice(1);
+
+      achievementsHTML += `
+                <div class="achievements-category">
+                    <h3 class="achievements-category-title">${categoryTitle}</h3>
+                    <div class="achievements-grid">
+            `;
+
+      items.forEach((achievement) => {
+        const lockedClass = achievement.unlocked ? "" : "achievement-locked";
+
+        achievementsHTML += `
+                    <div class="achievement-card ${lockedClass}">
+                        <div class="achievement-card-icon">${
+                          achievement.icon
+                        }</div>
+                        <div class="achievement-card-content">
+                            <h4 class="achievement-card-title">${
+                              achievement.title
+                            }</h4>
+                            <p class="achievement-card-desc">${
+                              achievement.description
+                            }</p>
+                            <div class="achievement-card-progress">
+                                <div class="achievement-progress-bar">
+                                    <div class="achievement-progress-fill" style="width: ${
+                                      achievement.progressPercent
+                                    }%"></div>
+                                </div>
+                                <div class="achievement-progress-text">${
+                                  achievement.progress
+                                }/${achievement.progressMax}</div>
+                            </div>
+                            ${
+                              achievement.unlocked
+                                ? `<div class="achievement-card-reward">Нагорода: ${achievement.reward}</div>`
+                                : ""
+                            }
+                        </div>
+                    </div>
+                `;
+      });
+
+      achievementsHTML += `
+                    </div>
+                </div>
+            `;
+    }
+  });
+
+  // Формування повного HTML модального вікна
+  modalElement.innerHTML = `
+        <div class="achievements-modal-content">
+            <div class="achievements-modal-header">
+                <h2>Досягнення</h2>
+                <button class="achievements-close-btn">&times;</button>
+            </div>
+            <div class="achievements-modal-body">
+                <div class="achievements-summary">
+                    <div class="achievements-total">
+                        <span class="achievements-total-count">${
+                          Object.keys(
+                            achievementManager.getUnlockedAchievements()
+                          ).length
+                        }</span>
+                        <span class="achievements-total-text">/${
+                          Object.keys(achievementsConfig).length
+                        } досягнень розблоковано</span>
+                    </div>
+                </div>
+                <div class="achievements-list">
+                    ${achievementsHTML}
+                </div>
+            </div>
+        </div>
+    `;
+
+  // Додавання модального вікна на сторінку
+  document.body.appendChild(modalElement);
+
+  // Обробник закриття модального вікна
+  modalElement
+    .querySelector(".achievements-close-btn")
+    .addEventListener("click", () => {
+      modalElement.classList.add("closing");
+      setTimeout(() => {
+        modalElement.remove();
+      }, 300);
+    });
+
+  // Клік поза вмістом закриває модальне вікно
+  modalElement.addEventListener("click", (e) => {
+    if (e.target === modalElement) {
+      modalElement.classList.add("closing");
+      setTimeout(() => {
+        modalElement.remove();
+      }, 300);
+    }
+  });
+
+  // Анімація появи
+  setTimeout(() => {
+    modalElement.classList.add("active");
+  }, 10);
 }
 
-window.resetChat = function (botId) {
-  // Виклик оригінальної функції
-  const result = window.originalResetChat.apply(this, arguments);
+// Додавання кнопки досягнень в інтерфейс
+function addAchievementsButton() {
+  const header = document.querySelector("header");
+  if (!header) return;
 
-  // Перевірка досягнень після скидання
-  achievementManager.checkAchievements(botId);
+  const achievementsButton = document.createElement("button");
+  achievementsButton.className = "achievements-button";
+  achievementsButton.innerHTML = "🏆 Досягнення";
+  achievementsButton.addEventListener("click", showAchievementsPanel);
 
-  return result;
-};
+  header.appendChild(achievementsButton);
+}
 
-/**
- * Глобальна функція для показу досягнень
- */
-window.showAchievements = function () {
-  const achievementsModal = document.getElementById("achievementsModal");
-  achievementsModal.classList.add("active");
-  updateAchievements();
-};
+// Ініціалізація системи досягнень після завантаження сторінки
+document.addEventListener("DOMContentLoaded", () => {
+  // Додаємо кнопку досягнень
+  addAchievementsButton();
+});

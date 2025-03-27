@@ -879,17 +879,9 @@ function initHintSystem() {
 
 // Оновлення структури заголовка чату з додаванням кнопки підказки
 function updateChatHeaderStructure(botId) {
-  const chatHeader = document
-    .getElementById(botId)
-    .querySelector(".chat-header");
-
-  // Перевіряємо, чи вже є кнопка підказки
-  const existingHintBtn = chatHeader.querySelector(".hint-btn");
-  if (existingHintBtn) {
-    return; // Якщо кнопка вже існує, виходимо з функції
-  }
-
-  const messageCounter = chatHeader.querySelector(".message-counter");
+  const chatTab = document.getElementById(botId);
+  const chatHeader = chatTab.querySelector(".chat-header");
+  const messageCounter = chatTab.querySelector(".message-counter");
   const resetBtn = chatHeader.querySelector(".reset-btn");
 
   // Створення нової структури
@@ -899,11 +891,9 @@ function updateChatHeaderStructure(botId) {
   // Основна інформація (заголовок і опис)
   const mainDiv = document.createElement("div");
   mainDiv.className = "chat-header-main";
-  mainDiv.innerHTML = headerContent
-    .replace(messageCounter.outerHTML, "")
-    .replace(resetBtn.outerHTML, "");
+  mainDiv.innerHTML = headerContent.replace(resetBtn.outerHTML, "");
 
-  // Елементи управління (лічильник і кнопки)
+  // Елементи управління (кнопки)
   const controlsDiv = document.createElement("div");
   controlsDiv.className = "chat-header-controls";
 
@@ -922,7 +912,6 @@ function updateChatHeaderStructure(botId) {
   controlsGroup.appendChild(hintBtn);
   controlsGroup.appendChild(resetBtn);
 
-  controlsDiv.appendChild(messageCounter);
   controlsDiv.appendChild(controlsGroup);
 
   chatHeader.appendChild(mainDiv);
@@ -1109,30 +1098,20 @@ function updateHintProgress(botId) {
 }
 
 // Розширення функції sendMessage для оновлення підказок після відправки повідомлення
+const originalSendMessage = window.sendMessage;
+window.sendMessage = function (botId) {
+  const result = originalSendMessage.apply(this, arguments);
+
+  // Оновлення прогресу в підказках
+  setTimeout(() => {
+    updateHintProgress(botId);
+  }, 1000);
+
+  return result;
+};
+
+// Ініціалізація системи підказок після завантаження сторінки
 document.addEventListener("DOMContentLoaded", () => {
-  // Додаємо оновлення підказок після надсилання повідомлення
-  // Спостерігаємо за змінами в чатах і оновлюємо підказки коли з'являється нове повідомлення
-  const chatObserver = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
-        // Знаходимо ID бота з батьківського елемента
-        const chatContainer = mutation.target;
-        const tabContent = chatContainer.closest(".tab-content");
-        if (tabContent) {
-          const botId = tabContent.id;
-          setTimeout(() => {
-            updateHintProgress(botId);
-          }, 1000);
-        }
-      }
-    });
-  });
-
-  // Підключаємо спостерігача до всіх контейнерів чатів
-  document.querySelectorAll(".chat-container").forEach((container) => {
-    chatObserver.observe(container, { childList: true });
-  });
+  // Додаємо невелику затримку, щоб переконатися, що інші компоненти вже ініціалізовані
+  setTimeout(initHintSystem, 500);
 });
-
-// Ініціалізація hintsConfig для доступу з інших модулів
-window.hintsConfig = hintsConfig;

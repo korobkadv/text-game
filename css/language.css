@@ -1,0 +1,102 @@
+/* Стилі для системи перемикання мов у Flat Design */
+
+/* Селектор мов */
+.language-selector {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.language-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid white;
+    background-color: transparent;
+    color: white;
+    cursor: pointer;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: all var(--transition-speed) ease;
+}
+
+.language-btn:hover {
+    transform: translateY(-2px);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.language-btn.active {
+    background-color: white;
+    color: var(--primary-color);
+    transform: none;
+    box-shadow: none;
+}
+
+/* Адаптивні стилі */
+@media (max-width: 768px) {
+    .language-btn {
+        width: 34px;
+        height: 34px;
+        font-size: 1.2rem;
+    }
+    
+    .language-selector {
+        margin-top: 0.5rem;
+    }
+}
+
+/* Анімації */
+@keyframes language-fade {
+    0% {
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.8;
+    }
+}
+
+.language-btn.new-select {
+    animation: language-fade 2s 1;
+}
+
+/* Розташування елементів в шапці */
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+/* Стилі для групування кнопок в шапці */
+@media (min-width: 769px) {
+    .header-controls {
+        flex-direction: row;
+        gap: 1.5rem;
+    }
+    
+    .language-selector {
+        margin-top: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-controls {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+}

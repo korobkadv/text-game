@@ -10,13 +10,16 @@ const GEMINI_API_URL =
   "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
 
 // Назва для локального сховища
-const STORAGE_KEY = "geminiChatGame";
+const STORAGE_KEY = "AiChatGame";
 
 // Налаштування для генерації відповідей
 const GENERATION_CONFIG = {
-  temperature: 0.7, // Креативність (0.0 - більш детерміністичні відповіді, 1.0 - більш креативні)
+  temperature: 0.9, // Креативність (0.0 - більш детерміністичні відповіді, 1.0 - більш креативні)
   maxOutputTokens: 800, // Максимальна довжина відповіді
 };
+
+// Максимальна кількість повідомлень для кожного чату
+const MAX_MESSAGES = 10;
 
 // Таймаут для імітації "думання" ШІ (мілісекунди)
 const THINKING_TIMEOUT = 500;

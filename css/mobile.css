@@ -1,4 +1,4 @@
-/* Стилі для мобільних пристроїв */
+/* Стилі для мобільних пристроїв у стилі Flat Design */
 
 /* Загальні стилі для прокручування категорій */
 .category-selector {
@@ -30,9 +30,9 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 30px;
-    height: 30px;
-    background-color: rgba(74, 111, 165, 0.8);
+    width: 36px;
+    height: 36px;
+    background-color: var(--primary-color);
     color: white;
     border-radius: 50%;
     display: flex;
@@ -40,9 +40,10 @@
     align-items: center;
     cursor: pointer;
     z-index: 10;
-    transition: opacity 0.3s ease;
-    font-size: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: all var(--transition-speed) ease;
+    font-size: 16px;
+    box-shadow: none;
+    opacity: 0.9;
 }
 
 .scroll-indicator.left {
@@ -53,6 +54,10 @@
     right: 5px;
 }
 
+.scroll-indicator:hover {
+    background-color: var(--primary-dark);
+}
+
 .scroll-indicator.hidden {
     opacity: 0;
     pointer-events: none;
@@ -60,6 +65,16 @@
 
 /* Стилі для категорій на мобільних */
 @media (max-width: 768px) {
+    .container {
+        padding: 0 0.5rem;
+        margin: 0.5rem auto;
+    }
+    
+    header {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    
     .category-selector {
         flex-wrap: nowrap;
         overflow-x: auto;
@@ -67,6 +82,7 @@
         -webkit-overflow-scrolling: touch;
         -ms-overflow-style: none;
         scrollbar-width: none;
+        margin-top: 0.5rem;
     }
 
     .category-selector::-webkit-scrollbar {
@@ -87,8 +103,30 @@
 
     /* Адаптація висоти блоку чату */
     .tab-content {
-        height: 65vh;
-        /* Трохи менша висота на мобільних */
+        border-radius: 3px;
+    }
+    
+    .chat-container {
+        padding: 0.75rem;
+    }
+    
+    .message {
+        padding: 0.6rem;
+        margin-bottom: 0.75rem;
+        max-width: 85%;
+        font-size: 0.95rem;
+    }
+
+    /* Покращена анімація для появи повідомлень на мобільних */
+    @keyframes messageAppear {
+        from {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     /* Вертикальні кнопки соцмереж */
@@ -99,6 +137,71 @@
     .share-btn,
     .copy-btn {
         margin: 5px 0;
+        width: 100%;
+        padding: 0.8rem;
+        text-align: center;
+    }
+    
+    .reset-btn {
+        padding: 0.4rem 0.8rem;
+        margin-left: 0.5rem;
+    }
+    
+    .message-counter {
+        font-size: 0.8rem;
+    }
+    
+    .chat-header {
+        padding: 0.75rem;
+        position: sticky;
+        top: 0;
+    }
+    
+    .chat-header h2 {
+        font-size: 1.2rem;
+    }
+    
+    .chat-header p {
+        font-size: 0.9rem;
+    }
+    
+    .chat-input {
+        position: sticky;
+        bottom: 0;
+        padding: 0.75rem;
+    }
+
+    .game-summary {
+        padding: 1rem;
+        margin: 0.75rem 0;
+    }
+    
+    .summary-header h3 {
+        font-size: 1.25rem;
+    }
+    
+    .game-summary p {
+        font-size: 0.95rem;
+    }
+    
+    .share-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .copy-btn, .share-btn, .try-again-btn {
+        width: 100%;
+        padding: 0.6rem;
+    }
+
+    header h1 {
+        font-size: 1.6rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    header p {
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
     }
 }
 
@@ -122,8 +225,32 @@
         padding: 0.5rem 0.7rem;
     }
 
+    .chat-input {
+        padding: 0.75rem;
+    }
+
     .chat-input input,
     .chat-input button {
         padding: 0.6rem;
+    }
+    
+    .chat-input input {
+        font-size: 0.9rem;
+    }
+    
+    .chat-input button {
+        min-width: 80px;
+    }
+    
+    .game-summary {
+        padding: 1rem;
+    }
+    
+    .summary-header h3 {
+        font-size: 1.2rem;
+    }
+    
+    .game-summary p {
+        font-size: 0.9rem;
     }
 }
