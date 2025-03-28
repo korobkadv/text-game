@@ -4,7 +4,7 @@
 .chat-header {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.6rem;
 }
 
 .chat-header-main {
@@ -16,17 +16,17 @@
     justify-content: flex-end;
     align-items: center;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.6rem;
 }
 
 .controls-group {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.6rem;
 }
 
 /* Кнопка підказки */
 .hint-btn {
-    padding: 0.5rem;
+    padding: 0.6rem;
     background-color: var(--warning-color);
     color: white;
     border: none;
@@ -37,6 +37,7 @@
     justify-content: center;
     font-weight: 500;
     transition: all var(--transition-speed) ease;
+    box-shadow: var(--box-shadow);
 }
 
 .hint-btn:hover {
@@ -57,7 +58,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 1000;
     justify-content: center;
     align-items: center;
@@ -85,9 +86,9 @@
     max-width: 500px;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: none;
+    box-shadow: var(--box-shadow);
     animation: slideIn var(--transition-speed) ease;
-    border: 1px solid var(--secondary-light);
+    border: none;
 }
 
 @keyframes slideIn {
@@ -106,7 +107,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
+    padding: 1.2rem;
     background-color: var(--primary-color);
     color: white;
     border-radius: var(--border-radius) var(--border-radius) 0 0;
@@ -114,7 +115,8 @@
 
 .hint-modal-header h3 {
     margin: 0;
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 1.3rem;
 }
 
 .hint-close-btn {
@@ -131,52 +133,57 @@
 }
 
 .hint-modal-body {
-    padding: 1.5rem;
+    padding: 1.6rem;
 }
 
 .hint-intro {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.6rem;
     font-size: 1rem;
     color: var(--dark-color);
+    line-height: 1.5;
 }
 
 .hint-list {
     list-style: none;
     padding: 0;
-    margin: 0 0 1.5rem 0;
+    margin: 0 0 1.6rem 0;
 }
 
 .hint-item {
-    margin-bottom: 1rem;
-    padding: 1rem;
+    margin-bottom: 1.2rem;
+    padding: 1.2rem;
     background-color: var(--light-color);
     border-radius: var(--border-radius);
     border-left: 3px solid var(--primary-color);
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
+    gap: 0.4rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .hint-keyword {
-    font-weight: 500;
-    font-size: 1.1rem;
+    font-weight: 600;
+    font-size: 1.15rem;
     color: var(--primary-color);
 }
 
 .hint-description {
     color: var(--secondary-color);
+    line-height: 1.5;
+    font-size: 0.95rem;
 }
 
 .hint-progress {
-    margin-top: 1.5rem;
-    padding: 1rem;
+    margin-top: 1.6rem;
+    padding: 1.2rem;
     background-color: var(--light-color);
     border-radius: var(--border-radius);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .hint-progress-label {
-    margin-bottom: 0.5rem;
-    font-weight: 500;
+    margin-bottom: 0.6rem;
+    font-weight: 600;
     color: var(--dark-color);
 }
 
@@ -185,7 +192,7 @@
     background-color: var(--secondary-light);
     border-radius: 4px;
     overflow: hidden;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.6rem;
 }
 
 .hint-progress-fill {
@@ -201,17 +208,19 @@
 }
 
 .hint-tip {
-    margin-top: 1.5rem;
-    padding: 1rem;
-    background-color: rgba(52, 152, 219, 0.1);
+    margin-top: 1.6rem;
+    padding: 1.2rem;
+    background-color: rgba(52, 152, 219, 0.08);
     border-radius: var(--border-radius);
     border-left: 3px solid var(--primary-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .hint-tip p {
     margin: 0;
     font-size: 0.95rem;
     color: var(--dark-color);
+    line-height: 1.5;
 }
 
 /* Мобільні стилі для підказок */
@@ -221,8 +230,12 @@
         max-height: 85vh;
     }
 
+    .hint-modal-body {
+        padding: 1.2rem;
+    }
+
     .hint-item {
-        padding: 0.8rem;
+        padding: 1rem;
     }
 
     .chat-header-controls {
@@ -233,5 +246,17 @@
 
     .controls-group {
         align-self: center;
+    }
+    
+    .hint-btn {
+        padding: 0.5rem;
+    }
+    
+    .hint-keyword {
+        font-size: 1.1rem;
+    }
+    
+    .hint-description {
+        font-size: 0.9rem;
     }
 }
